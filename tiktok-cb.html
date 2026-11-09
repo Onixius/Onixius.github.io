@@ -1,0 +1,57 @@
+<!doctype html>
+<html lang="bg">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex">
+<title>TikTok · код за свързване</title>
+<style>
+  body { margin: 0; background: #fff; color: #111; font: 17px/1.6 system-ui, -apple-system, "Segoe UI", Roboto, sans-serif; }
+  main { max-width: 720px; margin: 0 auto; padding: 48px 16px; }
+  h1 { font-size: 26px; margin: 0 0 12px; }
+  textarea { width: 100%; box-sizing: border-box; min-height: 110px; font: 15px/1.4 ui-monospace, Consolas, monospace; padding: 12px; border: 2px solid #f26a1b; border-radius: 8px; }
+  button { margin-top: 12px; padding: 10px 18px; font: inherit; font-weight: 600; color: #fff; background: #f26a1b; border: 0; border-radius: 8px; cursor: pointer; }
+  .warn { color: #b00020; }
+  .meta { color: #666; font-size: 14px; }
+</style>
+</head>
+<body>
+<main>
+  <h1>Код от TikTok</h1>
+  <div id="ok" hidden>
+    <p>Копирай кода и го прати на асистента <strong>веднага</strong>. Той изтича след няколко минути и важи само веднъж.</p>
+    <textarea id="code" readonly></textarea>
+    <button id="copy" type="button">Копирай кода</button>
+    <p class="meta">Кодът вече е разкодиран и е готов за размяната. Тази страница не го праща никъде, той остава само в твоя браузър.</p>
+  </div>
+  <div id="err" hidden>
+    <p class="warn" id="errText"></p>
+  </div>
+  <div id="none" hidden>
+    <p>Тук TikTok връща кода след „Разреши“. Отвори тази страница чрез линка за свързване, а не директно.</p>
+  </div>
+</main>
+<script>
+  (function () {
+    var p = new URLSearchParams(location.search);
+    var code = p.get('code');
+    var error = p.get('error');
+    if (code) {
+      document.getElementById('ok').hidden = false;
+      var box = document.getElementById('code');
+      box.value = code;
+      document.getElementById('copy').addEventListener('click', function () {
+        box.select();
+        try { navigator.clipboard.writeText(code); } catch (e) { document.execCommand('copy'); }
+        this.textContent = 'Копирано';
+      });
+    } else if (error) {
+      document.getElementById('err').hidden = false;
+      document.getElementById('errText').textContent = 'TikTok върна грешка: ' + error + ' ' + (p.get('error_description') || '');
+    } else {
+      document.getElementById('none').hidden = false;
+    }
+  })();
+</script>
+</body>
+</html>
